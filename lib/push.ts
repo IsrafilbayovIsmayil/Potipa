@@ -4,9 +4,11 @@ import * as wp from "web-push";
 const webpush = ((wp as unknown as { default?: typeof wp }).default ?? wp) as typeof wp;
 import { neon } from "@neondatabase/serverless";
 import type { Order } from "./order";
+import { productById } from "./products";
+import type { AdminLang } from "./adminI18n-types";
 
 export interface SubInput { endpoint: string; keys: { p256dh: string; auth: string } }
-interface Sub { endpoint: string; p256dh: string; auth: string; deviceId: string | null; label: string }
+interface Sub { endpoint: string; p256dh: string; auth: string; deviceId: string | null; label: string; lang: AdminLang }
 
 const usePg = !!process.env.DATABASE_URL;
 const sql = () => neon(process.env.DATABASE_URL!);
@@ -20,6 +22,7 @@ function ensure() {
     await q`CREATE TABLE IF NOT EXISTS kv (k TEXT PRIMARY KEY, v TEXT NOT NULL)`;
     await q`CREATE TABLE IF NOT EXISTS push_subs (endpoint TEXT PRIMARY KEY, p256dh TEXT NOT NULL, auth TEXT NOT NULL,
       device_id TEXT, label TEXT NOT NULL DEFAULT '', created_at TIMESTAMPTZ NOT NULL DEFAULT now())`;
+    await q`ALTER TABLE push_subs ADD COLUMN IF NOT EXISTS lang TEXT NOT NULL DEFAULT 'es'`;
   })();
   return ready;
 }
@@ -47,16 +50,16 @@ export function vapid() {
   return keys;
 }
 
-export async function saveSub(s: SubInput, deviceId: string | null, label: string) {
+export async function saveSub(s: SubInput, deviceId: string | null, label: string, lang: AdminLang = "es") {
   if (usePg) {
     await ensure();
-    await sql()`INSERT INTO push_subs (endpoint, p256dh, auth, device_id, label) VALUES (${s.endpoint}, ${s.keys.p256dh}, ${s.keys.auth}, ${deviceId}, ${label})
-      ON CONFLICT (endpoint) DO UPDATE SET p256dh = EXCLUDED.p256dh, auth = EXCLUDED.auth, device_id = EXCLUDED.device_id, label = EXCLUDED.label`;
+    await sql()`INSERT INTO push_subs (endpoint, p256dh, auth, device_id, label, lang) VALUES (${s.endpoint}, ${s.keys.p256dh}, ${s.keys.auth}, ${deviceId}, ${label}, ${lang})
+      ON CONFLICT (endpoint) DO UPDATE SET p256dh = EXCLUDED.p256dh, auth = EXCLUDED.auth, device_id = EXCLUDED.device_id, label = EXCLUDED.label, lang = EXCLUDED.lang`;
     return;
   }
   const db = await readF();
   db.subs = db.subs.filter((x) => x.endpoint !== s.endpoint);
-  db.subs.push({ endpoint: s.endpoint, p256dh: s.keys.p256dh, auth: s.keys.auth, deviceId, label });
+  db.subs.push({ endpoint: s.endpoint, p256dh: s.keys.p256dh, auth: s.keys.auth, deviceId, label, lang });
   await writeF(db);
 }
 export async function removeSub(endpoint: string) {
@@ -71,17 +74,18 @@ export async function removeSubsForDevice(deviceId: string) {
 async function allSubs(): Promise<Sub[]> {
   if (usePg) {
     await ensure();
-    const rows = await sql()`SELECT endpoint, p256dh, auth, device_id, label FROM push_subs`;
-    return rows.map((r) => ({ endpoint: r.endpoint as string, p256dh: r.p256dh as string, auth: r.auth as string, deviceId: (r.device_id as string) ?? null, label: r.label as string }));
+    const rows = await sql()`SELECT endpoint, p256dh, auth, device_id, label, lang FROM push_subs`;
+    return rows.map((r) => ({ endpoint: r.endpoint as string, p256dh: r.p256dh as string, auth: r.auth as string, deviceId: (r.device_id as string) ?? null, label: r.label as string, lang: r.lang === "ru" ? "ru" : "es" }));
   }
   return (await readF()).subs;
 }
 
 /* ---------- sending ---------- */
-export async function pushPayload(o: Order) {
-  const items = o.items.map((i) => `${i.qty}× ${i.name}`).join(", ");
+export function pushPayload(o: Order, lang: AdminLang) {
+  const ru = lang === "ru";
+  const items = o.items.map((i) => `${i.qty}× ${productById(i.productId)?.name[lang] ?? i.name}`).join(", ");
   return JSON.stringify({
-    title: `🧁 Nuevo pedido #${o.number}${o.needsConfirmation ? " · por confirmar" : ""}`,
+    title: ru ? `🧁 Новый заказ №${o.number}${o.needsConfirmation ? " · уточнить" : ""}` : `🧁 Nuevo pedido #${o.number}${o.needsConfirmation ? " · por confirmar" : ""}`,
     body: `${o.name} · ${o.pickupDate} ${o.pickupTime}\n${items}`,
     tag: `order-${o.id}`,
     url: "/admin",
@@ -94,10 +98,9 @@ export async function notifyPush(o: Order) {
     if (!subs.length) return;
     const k = await vapid();
     webpush.setVapidDetails("https://potipa.vercel.app", k.publicKey, k.privateKey);
-    const payload = await pushPayload(o);
     await Promise.allSettled(subs.map(async (s) => {
       try {
-        await webpush.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, payload, { TTL: 3600, urgency: "high", timeout: 8000 });
+        await webpush.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, pushPayload(o, s.lang), { TTL: 3600, urgency: "high", timeout: 8000 });
       } catch (e) {
         const code = (e as { statusCode?: number }).statusCode;
         if (code === 404 || code === 410) await removeSub(s.endpoint); // phone uninstalled / revoked permission

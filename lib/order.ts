@@ -1,3 +1,4 @@
+import { isLocale, type Locale } from "./i18n";
 import { productById } from "./products";
 import { SHOP } from "./shop";
 import { madridToDate, slotsForDate } from "./time";
@@ -27,7 +28,8 @@ export interface Order {
   items: OrderItem[];
   totalCents: number;
   needsConfirmation: boolean;
-  locale: "es" | "ca";
+  /** language the customer used on the website (staff should reply in it) */
+  locale: Locale;
 }
 
 export type NewOrderInput = Pick<Order, "name" | "phone" | "pickupDate" | "pickupTime" | "notes" | "locale"> & {
@@ -45,7 +47,8 @@ export function validateOrder(raw: unknown, now = new Date()): { ok: true; data:
   const notes = str(r.notes, 500);
   const pickupDate = str(r.pickupDate, 10);
   const pickupTime = str(r.pickupTime, 5);
-  const locale = r.locale === "ca" ? "ca" : "es";
+  const locale: Locale = typeof r.locale === "string" && isLocale(r.locale) ? r.locale : "es";
+  const staff = "es" as const; // order lines are stored in Spanish; the admin translates for display
 
   if (name.length < 2) return { ok: false, error: "name" };
   if (!/^\+?\d{7,15}$/.test(phone)) return { ok: false, error: "phone" };
@@ -63,12 +66,12 @@ export function validateOrder(raw: unknown, now = new Date()): { ok: true; data:
     if (p.flavours) {
       const f = p.flavours.find((x) => x.id === it.flavour);
       if (!f) return { ok: false, error: "items" };
-      flavour = f.label[locale];
+      flavour = f.label[staff];
     }
     const inscription = p.inscription ? str(it.inscription, 120) || undefined : undefined;
     lead = Math.max(lead, p.leadHours);
     if (p.priceCents != null && p.kind === "fixed") total += p.priceCents * qty;
-    items.push({ productId: p.id, name: p.name[locale], qty, unitCents: p.priceCents, flavour, inscription, custom: p.kind === "custom" });
+    items.push({ productId: p.id, name: p.name[staff], qty, unitCents: p.priceCents, flavour, inscription, custom: p.kind === "custom" });
   }
 
   if (!slotsForDate(pickupDate).includes(pickupTime)) return { ok: false, error: "pickup" };
@@ -88,3 +91,13 @@ export const waLink = (phone: string, text?: string) => {
   return `https://wa.me/${full}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
 };
 export { SHOP };
+
+/** First message staff send to the customer on WhatsApp, in the customer's own language. */
+export function waGreeting(locale: Locale, name: string, n: number): string {
+  switch (locale) {
+    case "ca": return `Hola ${name}, som PoTiPa. Sobre la teva comanda #${n}: `;
+    case "en": return `Hi ${name}, this is PoTiPa. About your order #${n}: `;
+    case "ru": return `Здравствуйте, ${name}! Это PoTiPa. По вашему заказу №${n}: `;
+    default: return `Hola ${name}, somos PoTiPa. Sobre tu pedido #${n}: `;
+  }
+}

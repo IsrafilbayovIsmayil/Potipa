@@ -1,7 +1,11 @@
-export type L = { es: string; ca: string };
+import { TX, flavourTx, servesTx } from "./products.i18n";
+import { LOCALE_TAG, type Locale } from "./i18n";
+export type L = Record<Locale, string>;
+type L2 = { es: string; ca: string };
 export type Category = "tartas" | "bolleria" | "bodas";
 
 export interface Option { id: string; label: L }
+interface RawOption { id: string; label: L2 }
 export interface Product {
   id: string;
   category: Category;
@@ -19,7 +23,11 @@ export interface Product {
   designHint?: L;
 }
 
-export const PRODUCTS: Product[] = [
+interface RawProduct extends Omit<Product, "name" | "desc" | "serves" | "flavours" | "designHint"> {
+  name: L2; desc: L2; serves?: L2; flavours?: RawOption[]; designHint?: L2;
+}
+
+const RAW: RawProduct[] = [
   {
     id: "red-velvet", category: "tartas", kind: "fixed", priceCents: 6000, leadHours: 48,
     name: { es: "Red Velvet", ca: "Red Velvet" },
@@ -154,6 +162,19 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
+export const PRODUCTS: Product[] = RAW.map((r) => {
+  const x = TX[r.id];
+  const full = (es: L2, tx?: { en: string; ru: string } | null): L => ({ ...es, en: tx?.en ?? es.es, ru: tx?.ru ?? es.es });
+  return {
+    ...r,
+    name: full(r.name, x?.name),
+    desc: full(r.desc, x?.desc),
+    serves: r.serves ? full(r.serves, servesTx(r.serves.es)) : undefined,
+    designHint: r.designHint ? full(r.designHint, x?.designHint) : undefined,
+    flavours: r.flavours?.map((f) => ({ id: f.id, label: full(f.label, flavourTx(f.id)) })),
+  };
+});
+
 export const productById = (id: string) => PRODUCTS.find((p) => p.id === id);
-export const eur = (cents: number, locale = "es") =>
-  new Intl.NumberFormat(locale === "ca" ? "ca-ES" : "es-ES", { style: "currency", currency: "EUR", minimumFractionDigits: cents % 100 ? 2 : 0 }).format(cents / 100);
+export const eur = (cents: number, locale: Locale = "es") =>
+  new Intl.NumberFormat(LOCALE_TAG[locale] ?? "es-ES", { style: "currency", currency: "EUR", minimumFractionDigits: cents % 100 ? 2 : 0 }).format(cents / 100);

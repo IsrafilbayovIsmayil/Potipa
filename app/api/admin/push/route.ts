@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   const s = await req.json().catch(() => null);
   if (!s?.endpoint || typeof s.endpoint !== "string" || !s.endpoint.startsWith("https://") || !s.keys?.p256dh || !s.keys?.auth)
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
-  await saveSub({ endpoint: s.endpoint, keys: { p256dh: String(s.keys.p256dh), auth: String(s.keys.auth) } }, who.deviceId ?? null, who.label ?? "Dueña");
+  await saveSub({ endpoint: s.endpoint, keys: { p256dh: String(s.keys.p256dh), auth: String(s.keys.auth) } }, who.deviceId ?? null, who.label ?? "Dueña", s.lang === "ru" ? "ru" : "es");
   return NextResponse.json({ ok: true });
 }
 export async function DELETE(req: NextRequest) {

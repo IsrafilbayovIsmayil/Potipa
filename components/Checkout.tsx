@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useCart } from "./CartProvider";
 import { productById, eur } from "@/lib/products";
-import { t, type Locale } from "@/lib/i18n";
+import { LOCALE_TAG, t, type Locale } from "@/lib/i18n";
 import { addDays, availableSlots, madridParts } from "@/lib/time";
 import { SHOP } from "@/lib/shop";
 
@@ -46,7 +46,7 @@ export default function Checkout({ locale }: { locale: Locale }) {
     if (days.length && !days.find((x) => x.date === date)) { setDate(days[0].date); setTime(""); }
   }, [days, date]);
   const slots = days.find((x) => x.date === date)?.slots ?? [];
-  const dayLabel = (s: string) => new Intl.DateTimeFormat(locale === "ca" ? "ca-ES" : "es-ES", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }).format(new Date(s + "T12:00:00Z"));
+  const dayLabel = (s: string) => new Intl.DateTimeFormat(LOCALE_TAG[locale], { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }).format(new Date(s + "T12:00:00Z"));
   const leadText = lead >= 24 ? `${Math.round(lead / 24)} ${d.days_min}` : `${lead} ${d.hours_min}`;
 
   async function submit(e: React.FormEvent) {

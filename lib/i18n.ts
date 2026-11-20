@@ -1,5 +1,7 @@
-export const locales = ["ca", "es"] as const;
+export const locales = ["es", "ca", "en", "ru"] as const;
 export type Locale = (typeof locales)[number];
+export const LOCALE_NAMES: Record<Locale, string> = { es: "Español", ca: "Català", en: "English", ru: "Русский" };
+export const LOCALE_TAG: Record<Locale, string> = { es: "es-ES", ca: "ca-ES", en: "en-GB", ru: "ru-RU" };
 export const isLocale = (x: string): x is Locale => (locales as readonly string[]).includes(x);
 
 export const dict = {
@@ -29,7 +31,6 @@ export const dict = {
     hours_days: { 1: "Lunes", 2: "Martes", 3: "Miércoles", 4: "Jueves", 5: "Viernes", 6: "Sábado", 0: "Domingo" },
     hours_wd: "Lun – Sáb", hours_sun: "Domingo", closed: "Cerrado",
     days_min: "días", hours_min: "h",
-    lang: "CA",
   },
   ca: {
     nav_cakes: "Pastissos", nav_pastry: "Brioixeria", nav_weddings: "Noces", nav_visit: "Visita'ns",
@@ -57,7 +58,60 @@ export const dict = {
     hours_days: { 1: "Dilluns", 2: "Dimarts", 3: "Dimecres", 4: "Dijous", 5: "Divendres", 6: "Dissabte", 0: "Diumenge" },
     hours_wd: "Dll – Dss", hours_sun: "Diumenge", closed: "Tancat",
     days_min: "dies", hours_min: "h",
-    lang: "ES",
+  },
+  en: {
+    nav_cakes: "Cakes", nav_pastry: "Pastries", nav_weddings: "Weddings", nav_visit: "Visit us",
+    hero_kicker: "Bakery & Dolceria · Blanes",
+    hero_title: "Cakes that make moments sweeter",
+    hero_sub: "Handmade cakes, pastries and sweets, made with love in Blanes. Order online and pick up in the shop.",
+    cta_order: "Place an order", cta_menu: "See the menu",
+    sec_cakes: "Our cakes", sec_cakes_sub: "Order in advance and pick it up in the shop on the day you choose.",
+    sec_pastry: "Pastries", sec_pastry_sub: "Freshly made. The ideal size for one person.",
+    sec_weddings: "Weddings", sec_weddings_sub: "Art for every occasion. A unique detail for an unforgettable day.",
+    how_title: "How to order", how1: "Choose", how1d: "Pick your sweets from the menu.", how2: "Book", how2d: "Tell us when you'll come to collect it.", how3: "Collect and pay", how3d: "You pay in the shop when you pick it up.",
+    visit_title: "Visit us", hours: "Opening hours", hours_note: "Provisional hours",
+    from: "from", price_tbc: "Price to be confirmed", add: "Add to order", added: "Added",
+    flavour: "Flavour", inscription: "Text on the cake (optional)", inscription_ph: "E.g.: Happy Birthday Alexa",
+    qty: "Quantity", custom_badge: "Confirmed with you", custom_note: "We confirm this order with you by phone or WhatsApp before preparing it.",
+    cart: "Order", cart_empty: "Your order is empty.", back_menu: "Back to the menu", remove: "Remove",
+    subtotal: "Estimated total", pay_note: "You pay in the shop when you collect.", plus_tbc: "+ amount to be confirmed",
+    your_data: "Your details", name: "Name", phone: "Phone / WhatsApp", pickup: "Pick-up", date: "Day", time: "Time",
+    pick_time: "Choose a time", no_slots: "No free times that day", earliest: "Minimum notice for your order:",
+    notes: "Notes (allergies, details…)", send: "Send order", sending: "Sending…",
+    err_generic: "We couldn't send your order. Please try again or message us on WhatsApp.",
+    err_name: "Please enter your name.", err_phone: "Please enter a valid phone number.", err_pickup: "Choose a pick-up day and time.", err_lead: "That time is no longer available. Please choose another.", err_rate: "Too many attempts. Please wait a few minutes.",
+    thanks_title: "Order received!", thanks_n: "Order no.", thanks_ok: "See you in the shop. Remember that you pay when you collect.",
+    thanks_tbc: "We'll contact you to confirm the details and the final price.", thanks_wa: "Message us on WhatsApp",
+    hours_days: { 1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday", 0: "Sunday" },
+    hours_wd: "Mon – Sat", hours_sun: "Sunday", closed: "Closed",
+    days_min: "days", hours_min: "h",
+  },
+  ru: {
+    nav_cakes: "Торты", nav_pastry: "Выпечка", nav_weddings: "Свадьбы", nav_visit: "Как нас найти",
+    hero_kicker: "Кондитерская и десерты · Бланес",
+    hero_title: "Торты, которые делают моменты слаще",
+    hero_sub: "Домашние торты, выпечка и сладости, приготовленные с любовью в Бланесе. Закажите онлайн и заберите в магазине.",
+    cta_order: "Сделать заказ", cta_menu: "Смотреть меню",
+    sec_cakes: "Наши торты", sec_cakes_sub: "Закажите заранее и заберите в магазине в удобный для вас день.",
+    sec_pastry: "Выпечка", sec_pastry_sub: "Только что из печи. Идеальный размер на одного человека.",
+    sec_weddings: "Свадьбы", sec_weddings_sub: "Искусство для любого события. Особая деталь для незабываемого дня.",
+    how_title: "Как заказать", how1: "Выберите", how1d: "Выберите сладости из меню.", how2: "Забронируйте", how2d: "Скажите, когда зайдёте за заказом.", how3: "Заберите и оплатите", how3d: "Оплата в магазине при получении.",
+    visit_title: "Как нас найти", hours: "Часы работы", hours_note: "Предварительный график",
+    from: "от", price_tbc: "Цена уточняется", add: "Добавить в заказ", added: "Добавлено",
+    flavour: "Вкус", inscription: "Надпись на торте (по желанию)", inscription_ph: "Напр.: С днём рождения, Алекса",
+    qty: "Количество", custom_badge: "Подтверждаем с вами", custom_note: "Этот заказ мы подтверждаем с вами по телефону или в WhatsApp до начала приготовления.",
+    cart: "Заказ", cart_empty: "Ваш заказ пуст.", back_menu: "Вернуться к меню", remove: "Убрать",
+    subtotal: "Ориентировочная сумма", pay_note: "Оплата в магазине при получении.", plus_tbc: "+ сумма уточняется",
+    your_data: "Ваши данные", name: "Имя", phone: "Телефон / WhatsApp", pickup: "Самовывоз", date: "День", time: "Время",
+    pick_time: "Выберите время", no_slots: "В этот день нет свободного времени", earliest: "Минимальный срок для вашего заказа:",
+    notes: "Комментарий (аллергии, пожелания…)", send: "Отправить заказ", sending: "Отправляем…",
+    err_generic: "Не удалось отправить заказ. Попробуйте ещё раз или напишите нам в WhatsApp.",
+    err_name: "Укажите ваше имя.", err_phone: "Укажите корректный номер телефона.", err_pickup: "Выберите день и время самовывоза.", err_lead: "Это время уже недоступно. Выберите другое.", err_rate: "Слишком много попыток. Подождите несколько минут.",
+    thanks_title: "Заказ принят!", thanks_n: "Заказ №", thanks_ok: "Ждём вас в магазине. Оплата при получении.",
+    thanks_tbc: "Мы свяжемся с вами, чтобы подтвердить детали и окончательную цену.", thanks_wa: "Написать в WhatsApp",
+    hours_days: { 1: "Понедельник", 2: "Вторник", 3: "Среда", 4: "Четверг", 5: "Пятница", 6: "Суббота", 0: "Воскресенье" },
+    hours_wd: "Пн – Сб", hours_sun: "Воскресенье", closed: "Закрыто",
+    days_min: "дн.", hours_min: "ч",
   },
 } as const;
 export type Dict = (typeof dict)["es"];

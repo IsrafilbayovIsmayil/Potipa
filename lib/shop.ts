@@ -1,10 +1,10 @@
 // TODO(confirm with the cafe): opening hours are PLACEHOLDERS.
 export const SHOP = {
   name: "PoTiPa",
-  tagline: { es: "Pastelería & Dolcería", ca: "Pastisseria & Dolceria" },
+  tagline: { es: "Pastelería & Dolcería", ca: "Pastisseria & Dolceria", en: "Bakery & Dolceria", ru: "Кондитерская и десерты" },
   address: "Rambla de Joaquim Ruyra, 3, 17300 Blanes (Girona)",
-  phone: "+34 664 33 79 99", // TODO confirm
-  whatsapp: "34664337999", // TODO confirm
+  phone: "+34 664 33 79 99", // confirmed by the cafe
+  whatsapp: "34664337999", // confirmed
   instagram: "https://www.instagram.com/potipa.blanes/",
   facebook: "https://www.facebook.com/potipablanes/",
   tz: "Europe/Madrid",
