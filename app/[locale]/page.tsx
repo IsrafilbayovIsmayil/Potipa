@@ -34,10 +34,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           </div>
           <div className="hero-in relative mx-auto w-full max-w-md [animation-delay:.15s] md:max-w-none">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[36px] ring-1 ring-gold/30">
-              <Image src="/img/red-velvet-mini.jpg" alt="" fill priority sizes="(min-width:768px) 45vw, 90vw" className="object-cover" />
+              <Image src="/img/azul-completa.jpg" alt="" fill priority sizes="(min-width:768px) 45vw, 90vw" className="object-cover object-[50%_35%]" />
             </div>
             <div className="absolute -bottom-5 left-2 w-[36%] rotate-[-4deg] overflow-hidden rounded-3xl ring-4 ring-cocoa shadow-2xl md:-left-8">
-              <div className="relative aspect-[4/5]"><Image src="/img/pistacho.jpg" alt="" fill sizes="200px" className="object-cover" /></div>
+              <div className="relative aspect-[4/5]"><Image src="/img/azul-detalle.jpg" alt="" fill sizes="200px" className="object-cover object-[60%_65%]" /></div>
             </div>
           </div>
         </div>
