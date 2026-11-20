@@ -7,7 +7,7 @@ const b64 = (s: string) => {
   return Uint8Array.from(r, (c) => c.charCodeAt(0));
 };
 
-export default function PushButton() {
+export default function PushButton({ compact }: { compact?: boolean }) {
   const [st, setSt] = useState<St>("loading");
   const [err, setErr] = useState("");
 
@@ -47,6 +47,12 @@ export default function PushButton() {
   }
 
   if (st === "loading" || st === "unsupported") return null;
+  if (compact) {
+    const base = "grid h-10 w-10 place-items-center rounded-full border text-lg";
+    if (st === "denied") return <span title="Avisos bloqueados en el navegador" className={`${base} border-white/10 opacity-40`}>📵</span>;
+    if (st === "on") return <button onClick={disable} title="Avisos activados · toca para desactivar" className={`${base} relative border-white/15`}>📲<span className="absolute right-0.5 top-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400" /></button>;
+    return <button onClick={enable} disabled={st === "busy"} title="Activar avisos en este dispositivo" className={`${base} border-[#e8625f] bg-[#e8625f]/20 disabled:opacity-50`}>📲</button>;
+  }
   if (st === "denied") return <span className="text-xs text-white/40">Avisos bloqueados en el navegador</span>;
   if (st === "on") return <button onClick={disable} className="rounded-full border border-white/20 px-4 py-2 text-sm">📲 Avisos activados</button>;
   return <button onClick={enable} disabled={st === "busy"} className="rounded-full bg-[#e8625f] px-4 py-2 text-sm font-medium text-white disabled:opacity-50">📲 Activar avisos{err && ` · ${err}`}</button>;

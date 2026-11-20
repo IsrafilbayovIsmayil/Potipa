@@ -12,6 +12,8 @@ const POLL_MS = 5000;
 export default function AdminScreen({ role, label }: { role: "owner" | "staff"; label?: string }) {
   const owner = role === "owner";
   const [showDevices, setShowDevices] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [tab, setTab] = useState<"new" | "accepted" | "ready">("new");
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -92,32 +94,60 @@ export default function AdminScreen({ role, label }: { role: "owner" | "staff"; 
   const accepted = by("accepted"), ready = by("ready");
   const history = orders.filter((o) => o.status === "done" || o.status === "cancelled").slice(0, 12);
 
+  const tabs: { k: "new" | "accepted" | "ready"; t: string; n: number }[] = [
+    { k: "new", t: "Nuevos", n: fresh.length }, { k: "accepted", t: "Preparación", n: accepted.length }, { k: "ready", t: "Listos", n: ready.length },
+  ];
+  const show = (k: string) => (tab === k ? "block" : "hidden") + " lg:block";
+  const icon = "grid h-10 w-10 place-items-center rounded-full border border-white/15 text-lg";
+
   return (
-    <div className="min-h-screen p-4 md:p-6">
-      <header className="mb-5 flex flex-wrap items-center gap-3">
-        <h1 className="font-display text-2xl">Pedidos PoTiPa</h1>
-        <span className={`rounded-full px-3 py-1 text-xs ${online ? "bg-emerald-500/15 text-emerald-300" : "bg-red-500/20 text-red-300"}`}>{online ? "● En directo" : "● Sin conexión"}</span>
-        <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
-          <PushButton />
-          {sound
-            ? <button onClick={chime} className="rounded-full border border-white/20 px-4 py-2 text-sm">🔔 Sonido activado · probar</button>
-            : <button onClick={enableSound} className="pulse-ring rounded-full bg-[#e8625f] px-4 py-2 text-sm font-medium text-white">🔕 Activar sonido</button>}
-          {owner && <button onClick={() => setShowDevices((v) => !v)} className="rounded-full border border-white/20 px-4 py-2 text-sm">📱 Dispositivos</button>}
-          {owner ? <button onClick={logout} className="rounded-full border border-white/10 px-3 py-2 text-xs text-white/50">Salir</button> : label && <span className="text-xs text-white/40">{label}</span>}
+    <div className="min-h-screen pb-10">
+      <header className="sticky top-0 z-20 border-b border-white/10 bg-[#171210]/95 backdrop-blur">
+        <div className="flex items-center gap-2 px-4 py-2.5 lg:px-6">
+          <h1 className="font-display text-xl">PoTiPa</h1>
+          <span title={online ? "En directo" : "Sin conexión"} className={`h-2.5 w-2.5 rounded-full ${online ? "bg-emerald-400" : "bg-red-500 animate-pulse"}`} />
+          {!online && <span className="text-xs text-red-300">Sin conexión</span>}
+          {!owner && label && <span className="text-xs text-white/40">{label}</span>}
+          <div className="ml-auto flex items-center gap-2">
+            <PushButton compact />
+            <button onClick={sound ? chime : enableSound} title={sound ? "Sonido activado · probar" : "Activar sonido"}
+              className={sound ? icon : `${icon} pulse-ring border-transparent bg-[#e8625f]`}>{sound ? "🔔" : "🔕"}</button>
+            {owner && (
+              <div className="relative">
+                <button onClick={() => setMenu((v) => !v)} aria-label="Menú" className={icon}>⋯</button>
+                {menu && (
+                  <div className="absolute right-0 top-12 w-52 overflow-hidden rounded-2xl border border-white/10 bg-[#241b17] shadow-xl">
+                    <button onClick={() => { setShowDevices((v) => !v); setMenu(false); }} className="block w-full px-4 py-3 text-left text-sm hover:bg-white/5">📱 Dispositivos</button>
+                    <button onClick={logout} className="block w-full border-t border-white/10 px-4 py-3 text-left text-sm text-white/60 hover:bg-white/5">Salir</button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
+        {!sound && <button onClick={enableSound} className="block w-full bg-[#e8625f] px-4 py-2 text-center text-sm font-medium text-white">🔕 Toca aquí para activar el sonido de los pedidos</button>}
+        <nav className="flex gap-1 px-3 pb-2 pt-1 lg:hidden">
+          {tabs.map((x) => (
+            <button key={x.k} onClick={() => setTab(x.k)}
+              className={`flex-1 rounded-full px-2 py-2 text-sm ${tab === x.k ? "bg-white/15 font-medium text-white" : "text-white/50"}`}>
+              {x.t} <span className={`ml-1 rounded-full px-1.5 text-xs font-bold ${x.k === "new" && x.n ? "bg-[#e8625f] text-white" : "bg-white/10"}`}>{x.n}</span>
+            </button>
+          ))}
+        </nav>
       </header>
 
+      <main className="px-4 pt-4 lg:px-6">
       {owner && showDevices && <DevicesPanel onClose={() => setShowDevices(false)} />}
       <div className="grid gap-5 lg:grid-cols-3">
-        <Column title="Nuevos" count={fresh.length} accent>
+        <Column title="Nuevos" count={fresh.length} accent cls={show("new")}>
           {fresh.length === 0 && <Empty text="Sin pedidos nuevos" />}
           {by("new").map((o) => <Card key={o.id} o={o} now={now} onMove={move} owner={owner} />)}
         </Column>
-        <Column title="En preparación" count={accepted.length}>
+        <Column title="En preparación" count={accepted.length} cls={show("accepted")}>
           {accepted.length === 0 && <Empty text="Nada en preparación" />}
           {accepted.map((o) => <Card key={o.id} o={o} now={now} onMove={move} owner={owner} />)}
         </Column>
-        <Column title="Listos para recoger" count={ready.length}>
+        <Column title="Listos para recoger" count={ready.length} cls={show("ready")}>
           {ready.length === 0 && <Empty text="Nada listo" />}
           {ready.map((o) => <Card key={o.id} o={o} now={now} onMove={move} owner={owner} />)}
         </Column>
@@ -136,20 +166,21 @@ export default function AdminScreen({ role, label }: { role: "owner" | "staff"; 
           </div>
         </details>
       )}
+      </main>
     </div>
   );
 }
 
-function Column({ title, count, accent, children }: { title: string; count: number; accent?: boolean; children: React.ReactNode }) {
+function Column({ title, count, accent, cls, children }: { title: string; count: number; accent?: boolean; cls: string; children: React.ReactNode }) {
   return (
-    <section>
-      <h2 className="mb-3 flex items-center gap-2 text-sm track text-white/60">{title}
+    <section className={cls}>
+      <h2 className="mb-3 hidden items-center gap-2 text-sm track text-white/60 lg:flex">{title}
         <span className={`grid h-6 min-w-6 place-items-center rounded-full px-1.5 text-xs font-bold ${accent && count ? "bg-[#e8625f] text-white" : "bg-white/10"}`}>{count}</span></h2>
       <div className="space-y-4">{children}</div>
     </section>
   );
 }
-const Empty = ({ text }: { text: string }) => <p className="rounded-2xl border border-dashed border-white/10 p-8 text-center text-sm text-white/30">{text}</p>;
+const Empty = ({ text }: { text: string }) => <p className="rounded-2xl border border-dashed border-white/10 p-5 text-center text-sm text-white/30">{text}</p>;
 
 function ago(ms: number) {
   const m = Math.max(0, Math.round(ms / 60000));
