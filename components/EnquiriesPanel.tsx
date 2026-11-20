@@ -45,11 +45,11 @@ function Item({ e, mark, a, fmtDate }: { e: Enquiry; mark: (id: string, h: boole
         <p className="text-lg font-medium">{e.name} <span className="ml-1 rounded bg-white/10 px-1.5 py-0.5 align-middle text-[10px] font-normal tracking-wider text-white/60">{(e.locale ?? "es").toUpperCase()}</span></p>
         <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${e.handled ? "bg-white/10 text-white/60" : "bg-[#e8625f] text-white"}`}>{e.handled ? a.enq_done : a.enq_new}</span>
       </div>
-      <p className="mt-2 inline-block rounded-lg bg-white/10 px-3 py-1.5 font-semibold">📅 {fmtDate(e.date)}</p>
+      <p className="mt-2 inline-block rounded-lg bg-white/10 px-3 py-1.5 font-semibold"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="mr-2 inline -mt-0.5 opacity-70" aria-hidden><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>{fmtDate(e.date)}</p>
       <div className="mt-3 space-y-1 text-[15px]">
         {row(a.enq_guests, e.guests)}{row(a.enq_venue, e.venue)}{row(a.enq_flavour, e.flavour)}
       </div>
-      {e.message && <p className="mt-3 whitespace-pre-line rounded-lg bg-white/5 p-2.5 text-sm text-white/80">📝 {e.message}</p>}
+      {e.message && <p className="mt-3 whitespace-pre-line rounded-lg bg-white/5 p-2.5 text-sm text-white/80">{e.message}</p>}
       <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm">
         <a className="underline" href={`tel:${e.phone}`}>{e.phone}</a>
         <a className="text-emerald-300 underline" target="_blank" rel="noreferrer" href={waLink(e.phone, fill(a.enq_wa, { n: e.name }))}>WhatsApp</a>

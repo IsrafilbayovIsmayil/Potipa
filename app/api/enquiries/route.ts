@@ -12,6 +12,6 @@ export async function POST(req: NextRequest) {
   if (!v.ok) return NextResponse.json({ error: v.error }, { status: 400 });
   const e = await createEnquiry(v.data);
   const bits = [e.date, e.guests && `${e.guests} p.`, e.venue].filter(Boolean).join(" · ");
-  await notifyPushText({ es: "💍 Nueva consulta de boda", ru: "💍 Новая заявка на свадебный торт" }, `${e.name} · ${e.phone}${bits ? `\n${bits}` : ""}`, `enq-${e.id}`);
+  await notifyPushText({ es: "Nueva consulta de boda", ru: "Новая заявка на свадебный торт" }, `${e.name} · ${e.phone}${bits ? `\n${bits}` : ""}`, `enq-${e.id}`);
   return NextResponse.json({ ok: true });
 }

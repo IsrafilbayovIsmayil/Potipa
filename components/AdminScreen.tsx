@@ -121,7 +121,7 @@ export default function AdminScreen({ role, label }: { role: "owner" | "staff"; 
             <AdminLangSwitch />
             <PushButton compact />
             <button onClick={sound ? chime : enableSound} title={sound ? a.sound_on : a.sound_off}
-              className={sound ? icon : `${icon} pulse-ring border-transparent bg-[#e8625f]`}>{sound ? "🔔" : "🔕"}</button>
+              className={sound ? icon : `${icon} pulse-ring border-transparent bg-[#e8625f]`}>{sound ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15L6 17Z"/><path d="M10 21a2 2 0 0 0 4 0"/></svg> : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M6 17V11a6 6 0 0 1 12 0v6l1.5 2h-15L6 17Z"/><path d="M10 21a2 2 0 0 0 4 0"/><path d="M4 4l16 16"/></svg>}</button>
             {owner && (
               <div className="relative">
                 <button onClick={() => setMenu((v) => !v)} aria-label={a.menu} className={icon}>⋯</button>
@@ -229,14 +229,14 @@ function Card({ o, now, onMove, owner, lang }: { o: Order; now: number; onMove: 
         </div>
         {o.needsConfirmation && <span className="rounded-full bg-amber-400/20 px-2.5 py-1 text-[11px] font-medium text-amber-200">{a.to_confirm}</span>}
       </div>
-      <p className="mt-2 inline-block rounded-lg bg-white/10 px-3 py-1.5 text-base font-semibold">📅 {pickupLabel(o, lang)}</p>
+      <p className="mt-2 inline-block rounded-lg bg-white/10 px-3 py-1.5 text-base font-semibold"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="mr-2 inline -mt-0.5 opacity-70" aria-hidden><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/></svg>{pickupLabel(o, lang)}</p>
       <ul className="mt-3 space-y-1.5 text-[15px]">
         {o.items.map((i, k) => (
           <li key={k}><b>{i.qty}×</b> {itemName(i, lang)}{i.flavour && <span className="text-white/60"> · {flavourName(i, lang)}</span>}
             {i.inscription && <div className="ml-6 text-sm italic text-[#f5b8b5]">«{i.inscription}»</div>}</li>
         ))}
       </ul>
-      {o.notes && <p className="mt-3 rounded-lg bg-white/5 p-2.5 text-sm text-white/80">📝 {o.notes}</p>}
+      {o.notes && <p className="mt-3 rounded-lg bg-white/5 p-2.5 text-sm text-white/80">{o.notes}</p>}
       <div className="mt-3 flex items-center justify-between text-sm">
         <span className="text-white/60">{o.totalCents ? eur(o.totalCents) : ""}{o.needsConfirmation ? a.plus_tbc : ""}</span>
         <span className="flex gap-3">

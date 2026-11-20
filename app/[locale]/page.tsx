@@ -26,20 +26,20 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <div className="hero-in text-center md:text-left">
             <p className="font-script text-4xl text-coral md:text-5xl">{d.w_script}</p>
             <h1 className="mt-2 text-[2.4rem] font-extrabold leading-[1.08] tracking-tight sm:text-6xl">
-              {d.w_t1}<br /><span className="gold-text">{d.w_t2}</span>
+              {d.w_t1}<br />{d.w_t2}
             </h1>
             <p className="mx-auto mt-5 max-w-md text-lg leading-relaxed text-black/65 md:mx-0">{d.w_sub}</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center md:justify-start">
-              <Link href="#bodas" className="btn bg-coral px-8 text-white shadow-lg shadow-coral/30 hover:bg-coral-dark">{d.w_cta1}</Link>
+              <Link href="#bodas" className="btn bg-coral px-8 text-white hover:bg-coral-dark">{d.w_cta1}</Link>
               <Link href="#contacto" className="btn border border-black/10 bg-white px-8 hover:border-coral hover:text-coral">{d.w_cta2}</Link>
             </div>
           </div>
           <div className="hero-in relative mx-auto w-full max-w-sm [animation-delay:.15s] md:max-w-md">
             <div className="absolute -inset-4 rounded-t-full bg-blush" aria-hidden />
-            <div className="relative aspect-[3/4] overflow-hidden rounded-t-full rounded-b-3xl shadow-2xl">
+            <div className="relative aspect-[3/4] overflow-hidden rounded-t-full rounded-b-3xl">
               <Image src="/img/azul-completa.jpg" alt="" fill priority sizes="(min-width:768px) 40vw, 80vw" className="object-cover object-[50%_35%]" />
             </div>
-            <div className="absolute -bottom-6 -left-3 w-[34%] overflow-hidden rounded-full ring-4 ring-cream shadow-xl md:-left-10">
+            <div className="absolute -bottom-6 -left-3 w-[34%] overflow-hidden rounded-full ring-4 ring-cream md:-left-10">
               <div className="relative aspect-square"><Image src="/img/azul-detalle.jpg" alt="" fill sizes="160px" className="object-cover object-[60%_65%]" /></div>
             </div>
           </div>
@@ -49,8 +49,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       {/* COLLECTIONS */}
       <section className="bg-white py-16">
         <div className="mx-auto max-w-6xl px-4 text-center">
-          <p className="font-script text-3xl text-gold">{d.col_kicker}</p>
-          <h2 className="mt-1 text-3xl font-bold tracking-tight md:text-4xl">{d.col_title}</h2>
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">{d.col_title}</h2>
           <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-9 md:grid-cols-4">
             {cols.map((c) => (
               <Link key={c.t} href={c.href} className="group">
@@ -75,8 +74,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <section id="bodas" className="scroll-mt-16 pb-16">
         <div className="mx-auto max-w-6xl px-4">
           <div className="text-center">
-            <p className="font-script text-3xl text-coral">{d.exp_kicker}</p>
-            <h2 className="mt-1 text-3xl font-bold tracking-tight md:text-4xl">{d.sec_weddings}</h2>
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">{d.sec_weddings}</h2>
             <p className="mx-auto mt-3 max-w-lg text-black/60">{d.sec_weddings_sub}</p>
           </div>
           <div className="mx-auto mt-10 max-w-3xl"><ProductGrid category="bodas" locale={locale} tone="light" /></div>
@@ -90,7 +88,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <p className="mx-auto mt-3 max-w-lg text-black/60">{d.exp_sub}</p>
           <ol className="mt-10 grid gap-5 text-left sm:grid-cols-2 lg:grid-cols-4">
             {steps.map(([a, b], i) => (
-              <li key={i} className="rounded-3xl bg-white p-6 shadow-[0_8px_30px_-12px_rgba(0,0,0,.1)]">
+              <li key={i} className="border-t border-gold/40 pt-4">
                 <span className="font-script text-4xl text-gold">{i + 1}</span>
                 <h3 className="mt-1 text-lg font-bold">{a}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-black/60">{b}</p>

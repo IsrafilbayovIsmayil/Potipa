@@ -29,7 +29,7 @@ export default function ProductGrid({ category, locale, tone = "dark", kind }: {
             <Tilt max={7} className="rounded-[30px]">
               <div className={`relative aspect-[3/4] ${dark ? "bg-roast" : "bg-blush"}`}>
                 <Image src={p.image} alt={p.name[locale]} fill sizes="(min-width:768px) 33vw, 76vw" className="object-cover" />
-                <span className="absolute bottom-4 left-4 rounded-full bg-coral px-4 py-2 text-base font-semibold text-cocoa shadow-lg">{priceText(p, locale)}</span>
+                <span className="absolute bottom-4 left-4 rounded-full bg-coral px-4 py-2 text-base font-semibold text-cocoa">{priceText(p, locale)}</span>
                 {p.kind === "custom" && <span className="absolute right-3 top-3 rounded-full bg-cocoa/75 px-3 py-1 text-[11px] font-medium text-crema backdrop-blur">{d.custom_badge}</span>}
               </div>
             </Tilt>

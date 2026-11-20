@@ -24,7 +24,7 @@ export default function WeddingForm({ locale }: { locale: Locale }) {
   if (state === "ok") {
     const wa = `https://wa.me/${SHOP.whatsapp}`;
     return (
-      <div className="rounded-3xl bg-white p-8 text-center shadow-[0_10px_40px_-12px_rgba(0,0,0,.12)]">
+      <div className="rounded-3xl bg-white p-8 text-center ring-1 ring-black/10">
         <p className="font-script text-4xl text-coral">{d.w_script}</p>
         <h3 className="mt-2 text-2xl font-bold">{d.f_ok_t}</h3>
         <p className="mt-3 text-black/65">{d.f_ok_d}</p>
@@ -34,7 +34,7 @@ export default function WeddingForm({ locale }: { locale: Locale }) {
     );
   }
   return (
-    <form onSubmit={submit} className="rounded-3xl bg-white p-6 shadow-[0_10px_40px_-12px_rgba(0,0,0,.12)] md:p-9">
+    <form onSubmit={submit} className="rounded-3xl bg-white p-6 ring-1 ring-black/10 md:p-9">
       <h3 className="mb-6 text-xl font-bold">{d.f_title}</h3>
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
       <div className="grid gap-4 sm:grid-cols-2">
@@ -53,7 +53,7 @@ export default function WeddingForm({ locale }: { locale: Locale }) {
       </div>
       <div className="mt-4"><label className={label} htmlFor="w-msg">{d.f_msg}</label><textarea id="w-msg" name="message" rows={4} placeholder={d.f_msg_ph} className={input} /></div>
       {state === "err" && <p role="alert" className="mt-4 text-sm text-coral-dark">{err}</p>}
-      <button disabled={state === "sending"} className="mt-6 h-14 w-full rounded-xl bg-coral text-base font-bold text-white shadow-lg shadow-coral/30 transition hover:bg-coral-dark disabled:opacity-60">
+      <button disabled={state === "sending"} className="mt-6 h-14 w-full rounded-xl bg-coral text-base font-bold text-white transition hover:bg-coral-dark disabled:opacity-60">
         {state === "sending" ? d.f_sending : d.f_send}
       </button>
       <p className="mt-4 text-center text-xs text-black/50">{d.f_photos}</p>

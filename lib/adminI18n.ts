@@ -5,9 +5,9 @@ import type { AdminLang } from "./adminI18n-types";
 export type { AdminLang };
 const es = {
   offline: "Sin conexión",
-  sound_banner: "🔕 Toca aquí para activar el sonido de los pedidos",
+  sound_banner: "Toca aquí para activar el sonido de los pedidos",
   sound_on: "Sonido activado · probar", sound_off: "Activar sonido",
-  menu: "Menú", menu_devices: "📱 Dispositivos", menu_logout: "Salir",
+  menu: "Menú", menu_devices: "Dispositivos", menu_logout: "Salir",
   tab_new: "Nuevos", tab_prep: "Preparación", tab_ready: "Listos",
   col_new: "Nuevos", col_prep: "En preparación", col_ready: "Listos para recoger",
   empty_new: "Sin pedidos nuevos", empty_prep: "Nada en preparación", empty_ready: "Nada listo",
@@ -39,9 +39,9 @@ const es = {
 export type AdminDict = typeof es;
 const ru: AdminDict = {
   offline: "Нет связи",
-  sound_banner: "🔕 Нажмите, чтобы включить звук новых заказов",
+  sound_banner: "Нажмите, чтобы включить звук новых заказов",
   sound_on: "Звук включён · проверить", sound_off: "Включить звук",
-  menu: "Меню", menu_devices: "📱 Устройства", menu_logout: "Выйти",
+  menu: "Меню", menu_devices: "Устройства", menu_logout: "Выйти",
   tab_new: "Новые", tab_prep: "Готовятся", tab_ready: "Готовы",
   col_new: "Новые", col_prep: "Готовятся", col_ready: "Готовы к выдаче",
   empty_new: "Нет новых заказов", empty_prep: "Ничего не готовится", empty_ready: "Ничего не готово",
