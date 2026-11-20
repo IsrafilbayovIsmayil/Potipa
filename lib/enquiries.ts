@@ -4,7 +4,7 @@ import { neon } from "@neondatabase/serverless";
 
 export interface Enquiry {
   id: string; createdAt: string; locale: string;
-  name: string; phone: string; date: string; venue: string; guests: string; flavour: string; message: string;
+  handled?: boolean; name: string; phone: string; date: string; venue: string; guests: string; flavour: string; message: string;
 }
 export type NewEnquiry = Omit<Enquiry, "id" | "createdAt">;
 
@@ -52,4 +52,19 @@ export async function listEnquiries(limit = 100): Promise<Enquiry[]> {
     return rows.map((r) => ({ ...(r.data as NewEnquiry), id: r.id as string, createdAt: new Date(r.created_at as string).toISOString() }));
   }
   try { return (JSON.parse(await fs.readFile(FILE, "utf8")) as Enquiry[]).reverse().slice(0, limit); } catch { return []; }
+}
+
+export async function setEnquiryHandled(id: string, handled: boolean): Promise<boolean> {
+  if (usePg) {
+    await ensure();
+    const r = await sql()`UPDATE enquiries SET data = data || ${JSON.stringify({ handled })}::jsonb WHERE id = ${id} RETURNING id`;
+    return r.length > 0;
+  }
+  try {
+    const all = JSON.parse(await fs.readFile(FILE, "utf8")) as Enquiry[];
+    const e = all.find((x) => x.id === id); if (!e) return false;
+    e.handled = handled;
+    await fs.writeFile(FILE, JSON.stringify(all, null, 2));
+    return true;
+  } catch { return false; }
 }

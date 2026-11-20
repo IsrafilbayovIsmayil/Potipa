@@ -32,6 +32,9 @@ const es = {
   dev_linked: "Vinculado {a} · visto {b}", dev_revoke: "Quitar acceso", dev_revoke_confirm: "¿Quitar el acceso a «{label}»? Se desconectará al instante.", dev_removed: "Quitados:",
   // customer message
   lang_chip: "Idioma del cliente",
+  view_orders: "Pedidos", view_enq: "Consultas", enq_empty: "Aún no hay consultas de bodas.", enq_new: "Nueva", enq_done: "Atendida",
+  enq_mark: "Marcar como atendida", enq_reopen: "Volver a pendiente", enq_date: "Fecha del evento", enq_guests: "Invitados", enq_venue: "Lugar", enq_flavour: "Sabor", enq_nodate: "sin fecha",
+  enq_hist: "Atendidas", enq_wa: "Hola {n}, soy de PoTiPa. Hemos recibido tu consulta para tu tarta. ¿Cuándo podemos hablar?",
 };
 export type AdminDict = typeof es;
 const ru: AdminDict = {
@@ -60,6 +63,9 @@ const ru: AdminDict = {
   dev_valid: "Действует {t} · одноразовый", dev_new_code: "Создайте новый код", dev_none: "Устройств пока нет.",
   dev_linked: "Привязано {a} · был в сети {b}", dev_revoke: "Убрать доступ", dev_revoke_confirm: "Убрать доступ для «{label}»? Устройство отключится сразу.", dev_removed: "Убраны:",
   lang_chip: "Язык клиента",
+  view_orders: "Заказы", view_enq: "Заявки", enq_empty: "Заявок на торты пока нет.", enq_new: "Новая", enq_done: "Обработана",
+  enq_mark: "Отметить обработанной", enq_reopen: "Вернуть в новые", enq_date: "Дата праздника", enq_guests: "Гостей", enq_venue: "Место", enq_flavour: "Вкус", enq_nodate: "дата не указана",
+  enq_hist: "Обработанные", enq_wa: "Hola {n}, soy de PoTiPa. Hemos recibido tu consulta para tu tarta. ¿Cuándo podemos hablar?",
 };
 export const AD: Record<AdminLang, AdminDict> = { es, ru };
 export const adminTag = (l: AdminLang) => (l === "ru" ? "ru-RU" : "es-ES");

@@ -9,6 +9,7 @@ import AdminLangSwitch from "./AdminLangSwitch";
 import { eur } from "@/lib/products";
 import PushButton from "./PushButton";
 import DevicesPanel from "./DevicesPanel";
+import EnquiriesPanel, { useEnquiries } from "./EnquiriesPanel";
 
 const POLL_MS = 5000;
 
@@ -18,6 +19,9 @@ export default function AdminScreen({ role, label }: { role: "owner" | "staff"; 
   const a = AD[lang];
   const [showDevices, setShowDevices] = useState(false);
   const [menu, setMenu] = useState(false);
+  const [view, setView] = useState<"orders" | "enq">("orders");
+  const { list: enqs, mark: markEnq } = useEnquiries();
+  const newEnq = enqs.filter((e) => !e.handled).length;
   const [tab, setTab] = useState<"new" | "accepted" | "ready">("new");
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -132,7 +136,14 @@ export default function AdminScreen({ role, label }: { role: "owner" | "staff"; 
           </div>
         </div>
         {!sound && <button onClick={enableSound} className="block w-full bg-[#e8625f] px-4 py-2 text-center text-sm font-medium text-white">{a.sound_banner}</button>}
-        <nav className="flex gap-1 px-3 pb-2 pt-1 lg:hidden">
+        <div className="flex gap-1 px-3 pb-1 pt-1 lg:px-6">
+          {([["orders", a.view_orders, fresh.length], ["enq", a.view_enq, newEnq]] as const).map(([k, t, n]) => (
+            <button key={k} onClick={() => setView(k)} className={`rounded-full px-4 py-1.5 text-sm ${view === k ? "bg-white/15 font-medium text-white" : "text-white/50"}`}>
+              {t} {n > 0 && <span className="ml-1 rounded-full bg-[#e8625f] px-1.5 text-xs font-bold text-white">{n}</span>}
+            </button>
+          ))}
+        </div>
+        <nav className={`flex gap-1 px-3 pb-2 pt-1 lg:hidden ${view === "enq" ? "hidden" : ""}`}>
           {tabs.map((x) => (
             <button key={x.k} onClick={() => setTab(x.k)}
               className={`flex-1 rounded-full px-2 py-2 text-sm ${tab === x.k ? "bg-white/15 font-medium text-white" : "text-white/50"}`}>
@@ -144,6 +155,7 @@ export default function AdminScreen({ role, label }: { role: "owner" | "staff"; 
 
       <main className="px-4 pt-4 lg:px-6">
       {owner && showDevices && <DevicesPanel onClose={() => setShowDevices(false)} />}
+      {view === "enq" ? <EnquiriesPanel list={enqs} mark={markEnq} lang={lang} /> : <>
       <div className="grid gap-5 lg:grid-cols-3">
         <Column title={a.col_new} count={fresh.length} accent cls={show("new")}>
           {fresh.length === 0 && <Empty text={a.empty_new} />}
@@ -172,6 +184,7 @@ export default function AdminScreen({ role, label }: { role: "owner" | "staff"; 
           </div>
         </details>
       )}
+      </>}
       </main>
     </div>
   );
