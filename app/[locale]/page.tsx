@@ -28,8 +28,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <p className="mt-5 max-w-md text-lg leading-relaxed text-crema/80">{d.hero_sub}</p>
             <div className="mt-7 grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap">
               <Link href="#tartas" className="btn col-span-2 bg-coral text-cocoa hover:bg-[#f58580] sm:col-auto">{d.cta_order}</Link>
-              <Link href="#bolleria" className={chip}>{d.nav_pastry}</Link>
               <Link href="#bodas" className={chip}>{d.nav_weddings}</Link>
+              <Link href="#visita" className={chip}>{d.nav_visit}</Link>
             </div>
           </div>
           <div className="hero-in relative mx-auto w-full max-w-md [animation-delay:.15s] md:max-w-none">
@@ -48,19 +48,17 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <div className="mx-auto max-w-6xl px-4 pb-16 pt-6">
           <h2 className="font-display text-3xl md:text-4xl">{d.sec_cakes}</h2>
           <p className="mb-9 mt-3 max-w-lg text-crema/70">{d.sec_cakes_sub}</p>
-          <ProductGrid category="tartas" locale={locale} />
+          <ProductGrid category="tartas" kind="fixed" locale={locale} />
         </div>
       </section>
 
       <Scallop from="#2a1a14" to="#fbf3e9" />
-      {/* PASTRY */}
-      <section id="bolleria" className="scroll-mt-16 bg-cream">
-        <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-14 md:grid-cols-[1fr_1.5fr] md:gap-14">
-          <div>
-            <h2 className="font-display text-3xl md:text-4xl">{d.sec_pastry}</h2>
-            <p className="mb-0 mt-3 max-w-md text-cocoa/70 md:mb-8">{d.sec_pastry_sub}</p>
-          </div>
-          <div><ProductGrid category="bolleria" locale={locale} tone="light" /></div>
+      {/* CELEBRATIONS */}
+      <section id="celebrar" className="scroll-mt-16 bg-cream">
+        <div className="mx-auto max-w-6xl px-4 pb-16 pt-6">
+          <h2 className="font-display text-3xl md:text-4xl">{d.sec_custom}</h2>
+          <p className="mb-9 mt-3 max-w-lg text-cocoa/70">{d.sec_custom_sub}</p>
+          <ProductGrid category="tartas" kind="custom" locale={locale} tone="light" />
         </div>
       </section>
 
@@ -90,7 +88,21 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </div>
       </section>
 
-      <Scallop from="#f7d6d0" to="#2a1a14" />
+      <Scallop from="#f7d6d0" to="#fbf3e9" />
+      {/* IN THE SHOP */}
+      <section id="tienda" className="scroll-mt-16 bg-cream">
+        <div className="mx-auto grid max-w-6xl items-center gap-9 px-4 pb-16 pt-6 md:grid-cols-2 md:gap-14">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[32px]">
+            <Image src="/img/shop-interior.jpg" alt="" fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" />
+          </div>
+          <div>
+            <h2 className="font-display text-3xl md:text-4xl">{d.sec_shop}</h2>
+            <p className="mt-4 max-w-md text-lg leading-relaxed text-cocoa/75">{d.sec_shop_sub}</p>
+          </div>
+        </div>
+      </section>
+
+      <Scallop from="#fbf3e9" to="#2a1a14" />
       {/* VISIT */}
       <section id="visita" className="scroll-mt-16 bg-cocoa text-crema">
         <div className="mx-auto grid max-w-6xl items-center gap-9 px-4 pb-16 pt-6 md:grid-cols-2 md:gap-14">

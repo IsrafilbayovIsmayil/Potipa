@@ -15,10 +15,10 @@ export function priceText(p: Product, locale: Locale) {
   return p.kind === "custom" ? `${d.from} ${eur(p.priceCents, locale)}` : eur(p.priceCents, locale);
 }
 
-export default function ProductGrid({ category, locale, tone = "dark" }: { category: Product["category"]; locale: Locale; tone?: "dark" | "light" }) {
+export default function ProductGrid({ category, locale, tone = "dark", kind }: { category: Product["category"]; locale: Locale; tone?: "dark" | "light"; kind?: Product["kind"] }) {
   const dark = tone === "dark";
   const [open, setOpen] = useState<Product | null>(null);
-  const items = PRODUCTS.filter((p) => p.category === category);
+  const items = PRODUCTS.filter((p) => p.category === category && (!kind || p.kind === kind));
   const d = t(locale);
   return (
     <>

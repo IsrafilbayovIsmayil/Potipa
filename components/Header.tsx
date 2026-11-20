@@ -20,7 +20,6 @@ export default function Header({ locale }: { locale: Locale }) {
         </Link>
         <nav className="ml-auto hidden items-center gap-7 text-sm md:flex">
           <Link href={`/${locale}#tartas`} className="hover:text-gold">{d.nav_cakes}</Link>
-          <Link href={`/${locale}#bolleria`} className="hover:text-gold">{d.nav_pastry}</Link>
           <Link href={`/${locale}#bodas`} className="hover:text-gold">{d.nav_weddings}</Link>
           <Link href={`/${locale}#visita`} className="hover:text-gold">{d.nav_visit}</Link>
         </nav>
