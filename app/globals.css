@@ -1,18 +1,41 @@
 @import "tailwindcss";
+@import "@fontsource-variable/unbounded";
+@import "@fontsource-variable/onest";
 
 @theme {
-  --color-coral: #e8625f;
-  --color-coral-dark: #c94a48;
-  --color-cream: #fbf5ef;
-  --color-cocoa: #35261f;
-  --color-gold: #b98a4b;
-  --color-blush: #f7dcd8;
-  --font-display: ui-serif, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --font-sans: ui-sans-serif, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+  --color-coral: #ee6a64;
+  --color-coral-dark: #d4504a;
+  --color-cream: #fbf3e9;
+  --color-cocoa: #2a1a14;
+  --color-roast: #3b261c;
+  --color-crema: #f6e7d3;
+  --color-gold: #d9a55b;
+  --color-blush: #f7d6d0;
+  --font-display: "Unbounded Variable", "Onest Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Onest Variable", ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
 }
 
 html { scroll-behavior: smooth; }
-body { font-family: var(--font-sans); background: var(--color-cream); color: var(--color-cocoa); }
-.track { letter-spacing: 0.22em; text-transform: uppercase; }
-@keyframes pulse-ring { 0%,100% { box-shadow: 0 0 0 0 rgba(232,98,95,.7);} 50% { box-shadow: 0 0 0 14px rgba(232,98,95,0);} }
+body { font-family: var(--font-sans); background: var(--color-cream); color: var(--color-cocoa); -webkit-font-smoothing: antialiased; }
+.font-display { font-weight: 500; letter-spacing: -0.01em; }
+.track { letter-spacing: 0.18em; text-transform: uppercase; }
+
+/* Awning: coral/white stripes with scalloped lower edge. Used once in the header, once per section break. */
+.awning {
+  --s: 28px;
+  height: 22px;
+  background:
+    radial-gradient(circle at 50% 0, var(--c, #ee6a64) 0 13px, transparent 13.5px) 0 100% / var(--s) 14px repeat-x,
+    repeating-linear-gradient(90deg, #ee6a64 0 var(--s), #fff7ef var(--s) calc(var(--s) * 2)) 0 0 / auto 9px repeat-x;
+}
+.scallop-top { /* section divider: tint of the section below hangs down from the section above */
+  height: 14px;
+  background: radial-gradient(circle at 50% 0, var(--fill) 0 13px, transparent 13.5px) 0 0 / 28px 14px repeat-x;
+}
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
+  .hero-in { animation: rise .8s cubic-bezier(.2,.7,.2,1) both; }
+}
+:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+@keyframes pulse-ring { 0%,100% { box-shadow: 0 0 0 0 rgba(238,106,100,.7);} 50% { box-shadow: 0 0 0 14px rgba(238,106,100,0);} }
 .pulse-ring { animation: pulse-ring 1.4s infinite; }

@@ -15,24 +15,23 @@ export function priceText(p: Product, locale: Locale) {
   return p.kind === "custom" ? `${d.from} ${eur(p.priceCents, locale)}` : eur(p.priceCents, locale);
 }
 
-export default function ProductGrid({ category, locale }: { category: Product["category"]; locale: Locale }) {
+export default function ProductGrid({ category, locale, tone = "dark" }: { category: Product["category"]; locale: Locale; tone?: "dark" | "light" }) {
+  const dark = tone === "dark";
   const [open, setOpen] = useState<Product | null>(null);
   const items = PRODUCTS.filter((p) => p.category === category);
   const d = t(locale);
   return (
     <>
-      <div className={`grid gap-5 ${category === "bodas" ? "sm:grid-cols-2" : "grid-cols-2 lg:grid-cols-3"}`}>
+      <div className={`grid gap-x-4 gap-y-8 ${category === "bodas" ? "sm:grid-cols-2" : "grid-cols-2 lg:grid-cols-3"}`}>
         {items.map((p) => (
-          <button key={p.id} onClick={() => setOpen(p)} className="group overflow-hidden rounded-2xl bg-white text-left shadow-sm ring-1 ring-cocoa/5 transition hover:-translate-y-0.5 hover:shadow-lg">
-            <div className="relative aspect-[4/5] overflow-hidden bg-blush">
-              <Image src={p.image} alt={p.name[locale]} fill sizes="(min-width:1024px) 33vw, 50vw" className="object-cover transition duration-500 group-hover:scale-105" />
-              {p.kind === "custom" && <span className="absolute left-2 top-2 rounded-full bg-cocoa/80 px-2.5 py-1 text-[10px] track text-white">{d.custom_badge}</span>}
+          <button key={p.id} onClick={() => setOpen(p)} className="group text-left">
+            <div className={`relative aspect-[4/5] overflow-hidden rounded-[28px] ${dark ? "bg-roast" : "bg-blush"}`}>
+              <Image src={p.image} alt={p.name[locale]} fill sizes="(min-width:1024px) 33vw, 50vw" className="object-cover transition duration-700 group-hover:scale-[1.04]" />
+              <span className="absolute bottom-3 left-3 rounded-full bg-coral px-3.5 py-1.5 text-sm font-semibold text-cocoa shadow-lg">{priceText(p, locale)}</span>
+              {p.kind === "custom" && <span className="absolute right-3 top-3 rounded-full bg-cocoa/75 px-3 py-1 text-[11px] font-medium text-crema backdrop-blur">{d.custom_badge}</span>}
             </div>
-            <div className="p-4">
-              <h3 className="font-display text-lg leading-tight">{p.name[locale]}</h3>
-              {p.serves && <p className="mt-1 text-xs text-cocoa/60">{p.serves[locale]}</p>}
-              <p className="mt-2 font-medium text-coral">{priceText(p, locale)}</p>
-            </div>
+            <h3 className={`mt-3 font-display text-base leading-snug md:text-lg ${dark ? "text-crema" : "text-cocoa"}`}>{p.name[locale]}</h3>
+            {p.serves && <p className={`mt-0.5 text-sm ${dark ? "text-crema/60" : "text-cocoa/60"}`}>{p.serves[locale]}</p>}
           </button>
         ))}
       </div>
@@ -62,7 +61,7 @@ function ProductModal({ p, locale, onClose }: { p: Product; locale: Locale; onCl
   };
   return (
     <div className="fixed inset-0 z-50 grid place-items-end bg-cocoa/60 sm:place-items-center" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="max-h-[92vh] w-full overflow-auto rounded-t-3xl bg-cream sm:max-w-3xl sm:rounded-3xl" onClick={(e) => e.stopPropagation()}>
+      <div className="max-h-[92vh] w-full overflow-auto rounded-t-3xl bg-cream text-cocoa sm:max-w-3xl sm:rounded-3xl" onClick={(e) => e.stopPropagation()}>
         <div className="grid sm:grid-cols-2">
           <div className="relative aspect-[4/3] sm:aspect-auto sm:min-h-[420px]">
             <Image src={p.image} alt={p.name[locale]} fill sizes="400px" className="object-cover" />
