@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { createHash, randomBytes, randomInt } from "node:crypto";
 import { neon } from "@neondatabase/serverless";
+import { removeSubsForDevice } from "./push";
 
 export interface Device { id: string; label: string; createdAt: string; lastSeen: string | null; revokedAt: string | null }
 interface DeviceRow extends Device { tokenHash: string }
@@ -124,6 +125,7 @@ export async function revokeDevice(id: string): Promise<boolean> {
   if (usePg) {
     await ensure();
     const rows = await sql()`UPDATE devices SET revoked_at = now() WHERE id = ${id} AND revoked_at IS NULL RETURNING id`;
+    if (rows.length) await removeSubsForDevice(id);
     return rows.length > 0;
   }
   return lock(async () => {
@@ -132,6 +134,7 @@ export async function revokeDevice(id: string): Promise<boolean> {
     if (!d) return false;
     d.revokedAt = new Date().toISOString();
     await writeDb(db);
+    await removeSubsForDevice(id);
     return true;
   });
 }

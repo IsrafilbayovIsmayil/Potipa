@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { validateOrder } from "@/lib/order";
 import { createOrder } from "@/lib/store";
 import { notifyTelegram } from "@/lib/notify";
+import { notifyPush } from "@/lib/push";
 
 const hits = new Map<string, number[]>();
 function limited(ip: string) {
@@ -20,6 +21,6 @@ export async function POST(req: NextRequest) {
   const v = validateOrder(body);
   if (!v.ok) return NextResponse.json({ error: v.error }, { status: 400 });
   const order = await createOrder(v.data);
-  await notifyTelegram(order);
+  await Promise.all([notifyPush(order), notifyTelegram(order)]);
   return NextResponse.json({ ok: true, id: order.id, number: order.number });
 }

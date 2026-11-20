@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import type { Order, Status } from "@/lib/order";
 import { waLink } from "@/lib/order";
 import { eur } from "@/lib/products";
+import PushButton from "./PushButton";
 import DevicesPanel from "./DevicesPanel";
 
 const POLL_MS = 5000;
@@ -96,10 +97,11 @@ export default function AdminScreen({ role, label }: { role: "owner" | "staff"; 
       <header className="mb-5 flex flex-wrap items-center gap-3">
         <h1 className="font-display text-2xl">Pedidos PoTiPa</h1>
         <span className={`rounded-full px-3 py-1 text-xs ${online ? "bg-emerald-500/15 text-emerald-300" : "bg-red-500/20 text-red-300"}`}>{online ? "● En directo" : "● Sin conexión"}</span>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
+          <PushButton />
           {sound
             ? <button onClick={chime} className="rounded-full border border-white/20 px-4 py-2 text-sm">🔔 Sonido activado · probar</button>
-            : <button onClick={enableSound} className="pulse-ring rounded-full bg-[#e8625f] px-5 py-2.5 font-medium text-white">🔕 Pulsa para activar el sonido</button>}
+            : <button onClick={enableSound} className="pulse-ring rounded-full bg-[#e8625f] px-4 py-2 text-sm font-medium text-white">🔕 Activar sonido</button>}
           {owner && <button onClick={() => setShowDevices((v) => !v)} className="rounded-full border border-white/20 px-4 py-2 text-sm">📱 Dispositivos</button>}
           {owner ? <button onClick={logout} className="rounded-full border border-white/10 px-3 py-2 text-xs text-white/50">Salir</button> : label && <span className="text-xs text-white/40">{label}</span>}
         </div>
