@@ -4,10 +4,13 @@ import { useRouter } from "next/navigation";
 import type { Order, Status } from "@/lib/order";
 import { waLink } from "@/lib/order";
 import { eur } from "@/lib/products";
+import DevicesPanel from "./DevicesPanel";
 
 const POLL_MS = 5000;
 
-export default function AdminScreen() {
+export default function AdminScreen({ role, label }: { role: "owner" | "staff"; label?: string }) {
+  const owner = role === "owner";
+  const [showDevices, setShowDevices] = useState(false);
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -97,26 +100,28 @@ export default function AdminScreen() {
           {sound
             ? <button onClick={chime} className="rounded-full border border-white/20 px-4 py-2 text-sm">🔔 Sonido activado · probar</button>
             : <button onClick={enableSound} className="pulse-ring rounded-full bg-[#e8625f] px-5 py-2.5 font-medium text-white">🔕 Pulsa para activar el sonido</button>}
-          <button onClick={logout} className="rounded-full border border-white/10 px-3 py-2 text-xs text-white/50">Salir</button>
+          {owner && <button onClick={() => setShowDevices((v) => !v)} className="rounded-full border border-white/20 px-4 py-2 text-sm">📱 Dispositivos</button>}
+          {owner ? <button onClick={logout} className="rounded-full border border-white/10 px-3 py-2 text-xs text-white/50">Salir</button> : label && <span className="text-xs text-white/40">{label}</span>}
         </div>
       </header>
 
+      {owner && showDevices && <DevicesPanel onClose={() => setShowDevices(false)} />}
       <div className="grid gap-5 lg:grid-cols-3">
         <Column title="Nuevos" count={fresh.length} accent>
           {fresh.length === 0 && <Empty text="Sin pedidos nuevos" />}
-          {by("new").map((o) => <Card key={o.id} o={o} now={now} onMove={move} />)}
+          {by("new").map((o) => <Card key={o.id} o={o} now={now} onMove={move} owner={owner} />)}
         </Column>
         <Column title="En preparación" count={accepted.length}>
           {accepted.length === 0 && <Empty text="Nada en preparación" />}
-          {accepted.map((o) => <Card key={o.id} o={o} now={now} onMove={move} />)}
+          {accepted.map((o) => <Card key={o.id} o={o} now={now} onMove={move} owner={owner} />)}
         </Column>
         <Column title="Listos para recoger" count={ready.length}>
           {ready.length === 0 && <Empty text="Nada listo" />}
-          {ready.map((o) => <Card key={o.id} o={o} now={now} onMove={move} />)}
+          {ready.map((o) => <Card key={o.id} o={o} now={now} onMove={move} owner={owner} />)}
         </Column>
       </div>
 
-      {history.length > 0 && (
+      {owner && history.length > 0 && (
         <details className="mt-8">
           <summary className="cursor-pointer text-sm text-white/50">Historial reciente ({history.length})</summary>
           <div className="mt-3 grid gap-2 md:grid-cols-2 lg:grid-cols-3">
@@ -153,7 +158,7 @@ function pickupLabel(o: Order) {
   return `${new Intl.DateTimeFormat("es-ES", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" }).format(d)} · ${o.pickupTime}`;
 }
 
-function Card({ o, now, onMove }: { o: Order; now: number; onMove: (id: string, s: Status) => void }) {
+function Card({ o, now, onMove, owner }: { o: Order; now: number; onMove: (id: string, s: Status) => void; owner: boolean }) {
   const isNew = o.status === "new";
   const btn = "rounded-full px-4 py-2.5 text-sm font-medium";
   return (
@@ -185,7 +190,7 @@ function Card({ o, now, onMove }: { o: Order; now: number; onMove: (id: string, 
         {o.status === "accepted" && <button onClick={() => onMove(o.id, "ready")} className={`${btn} flex-1 bg-emerald-500 text-white`}>Listo para recoger</button>}
         {o.status === "ready" && <button onClick={() => onMove(o.id, "done")} className={`${btn} flex-1 bg-white text-black`}>Entregado</button>}
         {o.status !== "new" && <button onClick={() => onMove(o.id, "new")} className={`${btn} border border-white/15 text-white/60`}>↩</button>}
-        <button onClick={() => confirm("¿Cancelar este pedido?") && onMove(o.id, "cancelled")} className={`${btn} border border-white/15 text-white/60`}>Cancelar</button>
+        {owner && <button onClick={() => confirm("¿Cancelar este pedido?") && onMove(o.id, "cancelled")} className={`${btn} border border-white/15 text-white/60`}>Cancelar</button>}
       </div>
     </article>
   );
