@@ -15,7 +15,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const d = t(locale);
   const h = SHOP.hours;
   const fmt = (r: [number, number] | null) => (r ? `${String(r[0]).padStart(2, "0")}:00 – ${String(r[1]).padStart(2, "0")}:00` : d.closed);
-  const chip = "rounded-full border border-crema/25 px-4 py-2 text-sm text-crema hover:border-gold hover:text-gold";
+  const chip = "btn border border-crema/30 text-crema hover:border-gold hover:text-gold";
 
   return (
     <main>
@@ -24,10 +24,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 pb-14 pt-8 md:grid-cols-[1.1fr_1fr] md:gap-14 md:pb-24 md:pt-16">
           <div className="hero-in">
             <p className="text-sm font-medium text-gold">{d.hero_kicker}</p>
-            <h1 className="mt-3 font-display text-[2.1rem] leading-[1.08] sm:text-5xl md:text-6xl">{d.hero_title}</h1>
+            <h1 className="mt-3 font-display text-[1.85rem] leading-[1.15] sm:text-5xl md:text-6xl">{d.hero_title}</h1>
             <p className="mt-5 max-w-md text-lg leading-relaxed text-crema/80">{d.hero_sub}</p>
-            <div className="mt-7 flex flex-wrap gap-2.5">
-              <Link href="#tartas" className="rounded-full bg-coral px-6 py-3 font-semibold text-cocoa hover:bg-[#f58580]">{d.cta_order}</Link>
+            <div className="mt-7 grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap">
+              <Link href="#tartas" className="btn col-span-2 bg-coral text-cocoa hover:bg-[#f58580] sm:col-auto">{d.cta_order}</Link>
               <Link href="#bolleria" className={chip}>{d.nav_pastry}</Link>
               <Link href="#bodas" className={chip}>{d.nav_weddings}</Link>
             </div>

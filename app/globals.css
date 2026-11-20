@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@import "@fontsource-variable/unbounded";
-@import "@fontsource-variable/onest";
+@import "@fontsource-variable/montserrat";
+@import "@fontsource-variable/montserrat/wght-italic.css";
 
 @theme {
   --color-coral: #ee6a64;
@@ -11,13 +11,14 @@
   --color-crema: #f6e7d3;
   --color-gold: #d9a55b;
   --color-blush: #f7d6d0;
-  --font-display: "Unbounded Variable", "Onest Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Onest Variable", ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
+  --font-display: "Montserrat Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Montserrat Variable", ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
 }
 
 html { scroll-behavior: smooth; }
 body { font-family: var(--font-sans); background: var(--color-cream); color: var(--color-cocoa); -webkit-font-smoothing: antialiased; }
-.font-display { font-weight: 500; letter-spacing: -0.01em; }
+.font-display { font-weight: 700; letter-spacing: -0.02em; }
+.btn { display: inline-flex; align-items: center; justify-content: center; height: 3rem; padding: 0 1.5rem; border-radius: 9999px; font-size: .9375rem; font-weight: 600; line-height: 1; text-align: center; white-space: nowrap; }
 .track { letter-spacing: 0.18em; text-transform: uppercase; }
 
 /* Awning: coral/white stripes with scalloped lower edge. Used once in the header, once per section break. */
