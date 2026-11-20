@@ -1,18 +1,23 @@
 @import "tailwindcss";
 @import "@fontsource-variable/montserrat";
 @import "@fontsource-variable/montserrat/wght-italic.css";
+@import "@fontsource/sacramento";
+@import "@fontsource/marck-script/cyrillic-400.css";
+@import "@fontsource/marck-script/latin-400.css";
 
 @theme {
-  --color-coral: #ee6a64;
-  --color-coral-dark: #d4504a;
-  --color-cream: #fbf3e9;
-  --color-cocoa: #2a1a14;
-  --color-roast: #3b261c;
-  --color-crema: #f6e7d3;
-  --color-gold: #d9a55b;
-  --color-blush: #f7d6d0;
+  --color-coral: #f07470;
+  --color-coral-dark: #d9534f;
+  --color-cream: #fdfbfb;
+  --color-cocoa: #1a1a1a;
+  --color-roast: #2a2a2a;
+  --color-crema: #f6f1ef;
+  --color-gold: #b8952b;
+  --color-gold-light: #d4af37;
+  --color-blush: #fcefee;
   --font-display: "Montserrat Variable", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Montserrat Variable", ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
+  --font-script: "Sacramento", "Marck Script", cursive;
 }
 
 html { scroll-behavior: smooth; }
@@ -48,3 +53,8 @@ body { font-family: var(--font-sans); background: var(--color-cream); color: var
 .tilt:hover .tilt-glare, .tilt:active .tilt-glare { opacity: 1; }
 .snap-row { scrollbar-width: none; }
 .snap-row::-webkit-scrollbar { display: none; }
+
+/* Script accents: Sacramento is Latin-only, so Russian uses Marck Script. */
+.font-script { font-family: "Sacramento", cursive; font-weight: 400; letter-spacing: 0; }
+html[lang="ru"] .font-script { font-family: "Marck Script", "Sacramento", cursive; }
+.gold-text { background: linear-gradient(90deg, #d4af37, #b8952b); -webkit-background-clip: text; background-clip: text; color: transparent; }

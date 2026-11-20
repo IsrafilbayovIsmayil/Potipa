@@ -108,3 +108,21 @@ export async function notifyPush(o: Order) {
     }));
   } catch { /* never block the order */ }
 }
+
+/** Generic alert to every subscribed phone (used for wedding enquiries). */
+export async function notifyPushText(title: Record<AdminLang, string>, body: string, tag: string) {
+  try {
+    const subs = await allSubs();
+    if (!subs.length) return;
+    const k = await vapid();
+    webpush.setVapidDetails("https://potipa.vercel.app", k.publicKey, k.privateKey);
+    await Promise.allSettled(subs.map(async (s) => {
+      try {
+        await webpush.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, JSON.stringify({ title: title[s.lang], body, tag, url: "/admin" }), { TTL: 3600, urgency: "high", timeout: 8000 });
+      } catch (e) {
+        const code = (e as { statusCode?: number }).statusCode;
+        if (code === 404 || code === 410) await removeSub(s.endpoint);
+      }
+    }));
+  } catch { /* never block the enquiry */ }
+}
