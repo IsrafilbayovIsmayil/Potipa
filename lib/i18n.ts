@@ -30,7 +30,7 @@ export const dict = {
     thanks_title: "¡Pedido recibido!", thanks_n: "Pedido nº", thanks_ok: "Te esperamos en la tienda. Recuerda que se paga al recoger.",
     thanks_tbc: "Nos pondremos en contacto contigo para confirmar los detalles y el precio final.", thanks_wa: "Escríbenos por WhatsApp",
     hours_days: { 1: "Lunes", 2: "Martes", 3: "Miércoles", 4: "Jueves", 5: "Viernes", 6: "Sábado", 0: "Domingo" },
-    hours_wd: "Lun – Sáb", hours_sun: "Domingo", closed: "Cerrado",
+    hours_wd: "Lun – Sáb", hours_sun: "Domingo", hours_tsat: "Mar – Sáb", hours_mon: "Lunes", closed: "Cerrado",
     days_min: "días", hours_min: "h",
   },
   ca: {
@@ -58,7 +58,7 @@ export const dict = {
     thanks_title: "Comanda rebuda!", thanks_n: "Comanda núm.", thanks_ok: "Us esperem a la botiga. Recorda que es paga en recollir.",
     thanks_tbc: "Ens posarem en contacte amb tu per confirmar els detalls i el preu final.", thanks_wa: "Escriu-nos per WhatsApp",
     hours_days: { 1: "Dilluns", 2: "Dimarts", 3: "Dimecres", 4: "Dijous", 5: "Divendres", 6: "Dissabte", 0: "Diumenge" },
-    hours_wd: "Dll – Dss", hours_sun: "Diumenge", closed: "Tancat",
+    hours_wd: "Dll – Dss", hours_sun: "Diumenge", hours_tsat: "Dm – Dss", hours_mon: "Dilluns", closed: "Tancat",
     days_min: "dies", hours_min: "h",
   },
   en: {
@@ -86,7 +86,7 @@ export const dict = {
     thanks_title: "Order received!", thanks_n: "Order no.", thanks_ok: "See you in the shop. Remember that you pay when you collect.",
     thanks_tbc: "We'll contact you to confirm the details and the final price.", thanks_wa: "Message us on WhatsApp",
     hours_days: { 1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday", 0: "Sunday" },
-    hours_wd: "Mon – Sat", hours_sun: "Sunday", closed: "Closed",
+    hours_wd: "Mon – Sat", hours_sun: "Sunday", hours_tsat: "Tue – Sat", hours_mon: "Monday", closed: "Closed",
     days_min: "days", hours_min: "h",
   },
   ru: {
@@ -114,7 +114,7 @@ export const dict = {
     thanks_title: "Спасибо, заказ принят!", thanks_n: "Заказ №", thanks_ok: "Ждём вас в кондитерской. Платить нужно при получении.",
     thanks_tbc: "Мы напишем или позвоним, чтобы согласовать детали и итоговую цену.", thanks_wa: "Написать в WhatsApp",
     hours_days: { 1: "Понедельник", 2: "Вторник", 3: "Среда", 4: "Четверг", 5: "Пятница", 6: "Суббота", 0: "Воскресенье" },
-    hours_wd: "Пн – Сб", hours_sun: "Воскресенье", closed: "Закрыто",
+    hours_wd: "Пн – Сб", hours_sun: "Воскресенье", hours_tsat: "Вт – Сб", hours_mon: "Понедельник", closed: "Закрыто",
     days_min: "дн.", hours_min: "ч",
   },
 } as const;

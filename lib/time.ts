@@ -42,12 +42,11 @@ export function dowOf(date: string): number {
 
 /** All pickup slots ("HH:MM") for a date, ignoring lead time. */
 export function slotsForDate(date: string): string[] {
-  const h = SHOP.hours[dowOf(date)];
-  if (!h) return [];
+  const ranges = SHOP.hours[dowOf(date)] ?? [];
   const out: string[] = [];
-  for (let min = h[0] * 60; min <= h[1] * 60 - SHOP.slotMinutes; min += SHOP.slotMinutes) {
-    out.push(`${String(Math.floor(min / 60)).padStart(2, "0")}:${String(min % 60).padStart(2, "0")}`);
-  }
+  for (const [a, b] of ranges)
+    for (let min = a; min <= b - SHOP.slotMinutes; min += SHOP.slotMinutes)
+      out.push(`${String(Math.floor(min / 60)).padStart(2, "0")}:${String(min % 60).padStart(2, "0")}`);
   return out;
 }
 

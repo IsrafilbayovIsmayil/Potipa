@@ -117,6 +117,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">{d.visit_title}</h2>
             <p className="mt-5 text-lg">{SHOP.address}</p>
             <p className="mt-1"><a className="font-semibold text-coral-dark hover:underline" href={`tel:${SHOP.phone.replace(/\s/g, "")}`}>{SHOP.phone}</a> · <a className="font-semibold text-coral-dark hover:underline" href={`https://wa.me/${SHOP.whatsapp}`}>WhatsApp</a></p>
+            <div className="mt-6 max-w-sm text-[15px]">
+              {[[d.hours_tsat, "10:00 – 14:00 · 16:30 – 20:00"], [d.hours_sun, "10:00 – 14:00"], [d.hours_mon, d.closed]].map(([a, b], i) => (
+                <p key={i} className="flex justify-between gap-4 border-b border-black/10 py-2 last:border-0"><span className="font-semibold">{a}</span><span className="text-black/65">{b}</span></p>
+              ))}
+            </div>
             <div className="mt-6 flex gap-5 text-sm font-semibold">
               <a href={SHOP.instagram} target="_blank" rel="noreferrer" className="text-gold hover:underline">Instagram @potipa.blanes</a>
               <a href={SHOP.facebook} target="_blank" rel="noreferrer" className="text-gold hover:underline">Facebook</a>

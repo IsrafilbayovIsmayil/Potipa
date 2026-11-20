@@ -1,4 +1,3 @@
-// TODO(confirm with the cafe): opening hours are PLACEHOLDERS.
 export const SHOP = {
   name: "PoTiPa",
   tagline: { es: "Pastelería & Dolcería", ca: "Pastisseria & Dolceria", en: "Bakery & Dolceria", ru: "Кондитерская и десерты" },
@@ -8,9 +7,12 @@ export const SHOP = {
   instagram: "https://www.instagram.com/potipa.blanes/",
   facebook: "https://www.facebook.com/potipablanes/",
   tz: "Europe/Madrid",
-  // day of week (0=Sunday) -> [openHour, closeHour] or null if closed
+  // Confirmed from the Google listing (Nov 2026). Day of week (0=Sunday) -> list of [openMin, closeMin] ranges; empty = closed.
   hours: {
-    0: [9, 14], 1: [8, 20], 2: [8, 20], 3: [8, 20], 4: [8, 20], 5: [8, 20], 6: [8, 20],
-  } as Record<number, [number, number] | null>,
+    0: [[600, 840]],
+    1: [],
+    2: [[600, 840], [990, 1200]], 3: [[600, 840], [990, 1200]], 4: [[600, 840], [990, 1200]],
+    5: [[600, 840], [990, 1200]], 6: [[600, 840], [990, 1200]],
+  } as Record<number, [number, number][]>,
   slotMinutes: 30,
 };
