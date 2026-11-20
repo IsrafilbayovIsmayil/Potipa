@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { PRODUCTS, eur, type Product } from "@/lib/products";
 import { t, type Locale } from "@/lib/i18n";
 import { useCart } from "./CartProvider";
+import Tilt from "./Tilt";
 
 function leadLabel(h: number, d: ReturnType<typeof t>) {
   return h >= 24 ? `${Math.round(h / 24)} ${d.days_min}` : `${h} ${d.hours_min}`;
@@ -22,15 +23,17 @@ export default function ProductGrid({ category, locale, tone = "dark", kind }: {
   const d = t(locale);
   return (
     <>
-      <div className={`grid gap-x-4 gap-y-8 ${category === "bodas" ? "sm:grid-cols-2" : "grid-cols-2 lg:grid-cols-3"}`}>
+      <div className={`snap-row -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:gap-x-6 md:gap-y-10 md:overflow-visible md:px-0 ${category === "bodas" ? "md:grid-cols-2" : "md:grid-cols-3"}`}>
         {items.map((p) => (
-          <button key={p.id} onClick={() => setOpen(p)} className="group text-left">
-            <div className={`relative aspect-[4/5] overflow-hidden rounded-[28px] ${dark ? "bg-roast" : "bg-blush"}`}>
-              <Image src={p.image} alt={p.name[locale]} fill sizes="(min-width:1024px) 33vw, 50vw" className="object-cover transition duration-700 group-hover:scale-[1.04]" />
-              <span className="absolute bottom-3 left-3 rounded-full bg-coral px-3.5 py-1.5 text-sm font-semibold text-cocoa shadow-lg">{priceText(p, locale)}</span>
-              {p.kind === "custom" && <span className="absolute right-3 top-3 rounded-full bg-cocoa/75 px-3 py-1 text-[11px] font-medium text-crema backdrop-blur">{d.custom_badge}</span>}
-            </div>
-            <h3 className={`mt-3 font-display text-base leading-snug md:text-lg ${dark ? "text-crema" : "text-cocoa"}`}>{p.name[locale]}</h3>
+          <button key={p.id} onClick={() => setOpen(p)} className="group w-[76vw] max-w-[340px] shrink-0 snap-center text-left md:w-auto md:max-w-none">
+            <Tilt max={7} className="rounded-[30px]">
+              <div className={`relative aspect-[3/4] ${dark ? "bg-roast" : "bg-blush"}`}>
+                <Image src={p.image} alt={p.name[locale]} fill sizes="(min-width:768px) 33vw, 76vw" className="object-cover" />
+                <span className="absolute bottom-4 left-4 rounded-full bg-coral px-4 py-2 text-base font-semibold text-cocoa shadow-lg">{priceText(p, locale)}</span>
+                {p.kind === "custom" && <span className="absolute right-3 top-3 rounded-full bg-cocoa/75 px-3 py-1 text-[11px] font-medium text-crema backdrop-blur">{d.custom_badge}</span>}
+              </div>
+            </Tilt>
+            <h3 className={`mt-4 font-display text-lg leading-snug ${dark ? "text-crema" : "text-cocoa"}`}>{p.name[locale]}</h3>
             {p.serves && <p className={`mt-0.5 text-sm ${dark ? "text-crema/60" : "text-cocoa/60"}`}>{p.serves[locale]}</p>}
           </button>
         ))}
@@ -63,8 +66,8 @@ function ProductModal({ p, locale, onClose }: { p: Product; locale: Locale; onCl
     <div className="fixed inset-0 z-50 grid place-items-end bg-cocoa/60 sm:place-items-center" onClick={onClose} role="dialog" aria-modal="true">
       <div className="max-h-[92vh] w-full overflow-auto rounded-t-3xl bg-cream text-cocoa sm:max-w-3xl sm:rounded-3xl" onClick={(e) => e.stopPropagation()}>
         <div className="grid sm:grid-cols-2">
-          <div className="relative aspect-[4/3] sm:aspect-auto sm:min-h-[420px]">
-            <Image src={p.image} alt={p.name[locale]} fill sizes="400px" className="object-cover" />
+          <div className="relative aspect-[4/5] sm:aspect-auto sm:min-h-[460px]">
+            <Tilt touch max={8} className="absolute inset-0"><Image src={p.image} alt={p.name[locale]} fill sizes="450px" className="object-cover" /></Tilt>
           </div>
           <div className="flex flex-col gap-4 p-6">
             <div className="flex items-start justify-between gap-3">
