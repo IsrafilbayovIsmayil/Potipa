@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "@fontsource-variable/montserrat";
 @import "@fontsource-variable/montserrat/wght-italic.css";
+@import "@fontsource/cormorant-garamond/latin-500.css";
+@import "@fontsource/cormorant-garamond/cyrillic-500.css";
+@import "@fontsource/cormorant-garamond/latin-500-italic.css";
+@import "@fontsource/cormorant-garamond/cyrillic-500-italic.css";
 @import "@fontsource/sacramento";
 @import "@fontsource/marck-script/cyrillic-400.css";
 @import "@fontsource/marck-script/latin-400.css";
@@ -58,3 +62,11 @@ body { font-family: var(--font-sans); background: var(--color-cream); color: var
 .font-script { font-family: "Sacramento", cursive; font-weight: 400; letter-spacing: 0; }
 html[lang="ru"] .font-script { font-family: "Marck Script", "Sacramento", cursive; }
 .gold-text { background: linear-gradient(90deg, #d4af37, #b8952b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+.font-serif-d{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;letter-spacing:-.01em}
+@keyframes kb{from{transform:scale(1.04)}to{transform:scale(1.14) translate(-1.5%,-1%)}}
+.kb{animation:kb 14s ease-out both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.rise{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+@keyframes prog{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.kb,.rise{animation:none}}

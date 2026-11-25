@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductGrid from "@/components/ProductGrid";
 import WeddingForm from "@/components/WeddingForm";
+import HeroSlider from "@/components/HeroSlider";
 import { isLocale, t } from "@/lib/i18n";
 import { SHOP } from "@/lib/shop";
 
@@ -20,31 +21,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
   return (
     <main className="bg-cream text-cocoa">
-      {/* HERO */}
-      <section className="overflow-hidden">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-8 md:grid-cols-2 md:gap-14 md:pb-24 md:pt-16">
-          <div className="hero-in text-center md:text-left">
-            <p className="font-script text-4xl text-coral md:text-5xl">{d.w_script}</p>
-            <h1 className="mt-2 text-[2.4rem] font-extrabold leading-[1.08] tracking-tight sm:text-6xl">
-              {d.w_t1}<br />{d.w_t2}
-            </h1>
-            <p className="mx-auto mt-5 max-w-md text-lg leading-relaxed text-black/65 md:mx-0">{d.w_sub}</p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center md:justify-start">
-              <Link href="#bodas" className="btn bg-coral px-8 text-white hover:bg-coral-dark">{d.w_cta1}</Link>
-              <Link href="#contacto" className="btn border border-black/10 bg-white px-8 hover:border-coral hover:text-coral">{d.w_cta2}</Link>
-            </div>
-          </div>
-          <div className="hero-in relative mx-auto w-full max-w-sm [animation-delay:.15s] md:max-w-md">
-            <div className="absolute -inset-4 rounded-t-full bg-blush" aria-hidden />
-            <div className="relative aspect-[3/4] overflow-hidden rounded-t-full rounded-b-3xl">
-              <Image src="/img/azul-completa.jpg" alt="" fill priority sizes="(min-width:768px) 40vw, 80vw" className="object-cover object-[50%_35%]" />
-            </div>
-            <div className="absolute -bottom-6 -left-3 w-[34%] overflow-hidden rounded-full ring-4 ring-cream md:-left-10">
-              <div className="relative aspect-square"><Image src="/img/azul-detalle.jpg" alt="" fill sizes="160px" className="object-cover object-[60%_65%]" /></div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSlider locale={locale} />
 
       {/* COLLECTIONS */}
       <section className="bg-white py-16">
