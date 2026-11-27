@@ -43,7 +43,7 @@ export default function ProductGrid({ category, locale, tone = "dark", kind }: {
   );
 }
 
-function ProductModal({ p, locale, onClose }: { p: Product; locale: Locale; onClose: () => void }) {
+export function ProductModal({ p, locale, onClose }: { p: Product; locale: Locale; onClose: () => void }) {
   const d = t(locale);
   const { add } = useCart();
   const [flavour, setFlavour] = useState(p.flavours?.[0]?.id);
